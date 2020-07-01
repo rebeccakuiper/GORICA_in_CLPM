@@ -171,15 +171,19 @@ summary(goricaResults_Q2_b)
 # time-interval dependency #
 
 # Create Phi matrix from this and make Phi plot
+library(devtools)
+install_github("rebeccakuiper/CTmeta")
+library(CTmeta)
+#?PhiPlot
+if (!require("expm")) install.packages("expm") # install this package first (once)
+library(expm)
+
 #est <- stdClpmUnc[indices, 4]
 Phi <- matrix(est, byrow=T, ncol = sqrt(length(est)))
 Phi
-if (!require("expm")) install.packages("expm") # install this package first (once)
-library(expm)
 Drift <- logm(Phi)/1
-source("Phi-plot.R")
 PhiPlot(DeltaT = 1, Drift, Min = 0, Max = 10, Step = 0.05, WhichElements = NULL, Labels = NULL, Col = NULL, Lty = NULL, Title = NULL)
-#
+
 # Denote which of the Phi elements we want to plot based on Q1
 WhichEl_Q1 <- matrix(c(
   0, 0, 1, 1, 0, 0, 0, 0,
@@ -192,7 +196,7 @@ WhichEl_Q1 <- matrix(c(
   0, 0, 0, 0, 0, 0, 0, 0
 ), ncol = sqrt(length(est))) 
 PhiPlot(DeltaT = 1, Drift, Min = 0, Max = 10, Step = 0.05, WhichElements = WhichEl_Q1, Labels = NULL, Col = NULL, Lty = NULL, Title = NULL)
-#
+
 # Denote which of the Phi elements we want to plot based on Q2
 WhichEl_Q2 <- matrix(c(
   0, 0, 0, 0, 1, 1, 1, 1,

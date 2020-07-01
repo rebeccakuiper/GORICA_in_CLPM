@@ -488,11 +488,15 @@ summary(goricaResults_Q2)
 # time-interval dependency #
 
 # Create Phi matrix from this and make Phi plot
+library(devtools)
+install_github("rebeccakuiper/CTmeta")
+library(CTmeta)
+#?PhiPlot
+if (!require("expm")) install.packages("expm") # install this package first (once)
+library(expm)
+
 ##est <- stdClpmUnc[indices, 4]
 #Phi <- matrix(est, byrow=T, ncol = sqrt(length(est)))
-
-#if (!require("expm")) install.packages("expm") # install this package first (once)
-#library(expm)
 #Drift <- logm(Phi)/1 # the drift matrix = the continuous-time equivalent of the discrete-time CLPM lagged effects matrix
 
 # Explanation why it does not work here:
