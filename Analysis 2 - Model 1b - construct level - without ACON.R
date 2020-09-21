@@ -159,6 +159,8 @@ summary(CLPM_M2.fit, standardized = T, fit.measures=TRUE)[1]$FIT[c("chisq","df")
 #Diff = 721.021 - 715.867 = 5.154
 #https://www.socscistatistics.com/pvalues/chidistribution.aspx
 #The P-Value is .271858. The result is not significant at p < .05.
+# 1-pchisq(5.154, df = 4)
+##[1] 0.271858
 #
 #When the chi-square test is nonsignificant, this implies the factor loadings are not significantly different from each other over time. In other words, we can assume weak factorial invariance holds.
 
@@ -249,6 +251,7 @@ summary(CLPM_M3.fit, standardized = T, fit.measures=TRUE)[1]$FIT[c("chisq","df")
 #Diff = 725.4913 - 721.021 = 4.4703
 #https://www.socscistatistics.com/pvalues/chidistribution.aspx
 #The P-Value is .106976. The result is not significant at p < .05.
+# 1-pchisq(4.4703, df = 2)
 #
 #If this chi-square difference test is nonsignicant, this means we can assume that strong factorial invariance holds over time. 
 #In that case we could consider investigating whether the means change over time. This is just optional. 
@@ -336,6 +339,7 @@ summary(CLPM_M4.fit, standardized = T, fit.measures=TRUE)[1]$FIT[c("chisq","df")
 #Diff = 757.1568 - 725.4913 = 31.6655
 #https://www.socscistatistics.com/pvalues/chidistribution.aspx
 #The P-Value is .000019. The result is significant at p < .05.
+# 1-pchisq(31.6655, df = 6)
 #
 #Hence, we proceed with Model 3 (strong factorial invariance - with freeing the means; CLPM_M3.fit).
 
@@ -421,6 +425,7 @@ stdClpmUnc <- standardizedsolution(clpmUnc, type = "std.all", se = TRUE, zstat =
 
 # Model fit and estimates etc
 summary(clpmUnc, standardized = T, fit.measures=TRUE)
+stdClpmUnc # p-values of standardized effects
 
 # substract values of interest
 #summary(clpmUnc, standardized = T)$PE

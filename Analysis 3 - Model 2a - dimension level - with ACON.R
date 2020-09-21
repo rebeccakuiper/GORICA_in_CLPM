@@ -90,6 +90,9 @@ stdClpmUnc <- standardizedsolution(clpmUnc, type = "std.all", se = TRUE, zstat =
 # Model fit and estimates etc
 summary(clpmUnc, standardized = T, fit.measures=TRUE)
 # In this case, 'perfect' fit since degrees of freedom is 0.
+stdClpmUnc # p-values of standardized effects
+stdClpmUnc[112:dim(stdClpmUnc)[1],] # p-values of standardized effects
+
 
 # substract values of interest
 #summary(clpmUnc, standardized = T)$PE

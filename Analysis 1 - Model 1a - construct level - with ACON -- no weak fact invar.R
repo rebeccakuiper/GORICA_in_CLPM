@@ -157,6 +157,7 @@ summary(CLPM_M2.fit, standardized = T, fit.measures=TRUE)[1]$FIT[c("chisq","df")
 #Diff = 885.5345 - 865.4532 = 20.0813
 #https://www.socscistatistics.com/pvalues/chidistribution.aspx
 #The P-Value is .001207. The result is significant at p < .05.
+# 1-pchisq(20.0813, df = 5)
 #
 #When the chi-square test is nonsignificant, this implies the factor loadings are not significantly different from each other over time. In other words, we can assume weak factorial invariance holds.
 #If however the test is significant, this implies that the factor loadings cannot be constrained over time. This makes further comparisons between the latent variables very problematic or even impossible.
