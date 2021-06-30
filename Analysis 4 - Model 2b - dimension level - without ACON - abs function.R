@@ -1,5 +1,6 @@
 
 # Install packages and load libraries #
+#
 if (!require("tidyverse")) install.packages("tidyverse") # install this package first (once)
 if (!require("lavaan")) install.packages("lavaan") # install this package first (once)
 library(tidyverse)
@@ -7,6 +8,14 @@ library(lavaan)
 #
 if (!require("restriktor")) install.packages("restriktor") # install this package first (once)
 library(restriktor) # for goric function
+#
+# Temporary, until this is on CRAN
+#install.packages("devtools")
+library(devtools)
+devtools::install_github("yrosseel/lavaan")
+devtools::install_github("leonardv/restriktor")
+library(lavaan)
+library(restriktor)
 
 
 # Read in data file #
@@ -114,38 +123,18 @@ names(est) <- c("TH2_TH1", "TH2_TB1", "TH2_ACOM1", "TH2_SAT1", "TH2_AB1", "TH2_D
 vcov <- lavInspect(clpmUnc, "vcov.std.all")[indices, indices]
 
 # Specify hypotheses (using abs() notation)
-# Since we cannot evaluate absolute values,
-# first check whether there are negative estimates.
-# If so, then adjust sign in hypothesis accordingly.
 #
 # Q1
 H1_Q1 <- "
-ACOM2_TH1 > TH2_ACOM1; SAT2_TH1 > TH2_SAT1;
-ACOM2_TB1 > TB2_ACOM1; SAT2_TB1 > TB2_SAT1
-"
-est[c("ACOM2_TH1", "TH2_ACOM1", "SAT2_TH1", "TH2_SAT1", "ACOM2_TB1", "TB2_ACOM1", "SAT2_TB1", "TB2_SAT1")]
-#
-H1_Q1 <- "
--ACOM2_TH1 > -TH2_ACOM1; -SAT2_TH1 > TH2_SAT1;
-ACOM2_TB1 > TB2_ACOM1; SAT2_TB1 > TB2_SAT1
+abs(ACOM2_TH1) > abs(TH2_ACOM1); abs(SAT2_TH1) > abs(TH2_SAT1);
+abs(ACOM2_TB1) > abs(TB2_ACOM1); abs(SAT2_TB1) > abs(TB2_SAT1)
 "
 # Q2
 H1_Q2 <- "
-AB2_TH1 > TH2_AB1; DE2_TH1 > TH2_DE1; VI2_TH1 > TH2_VI1; SL2_TH1 > TH2_SL1;
-AB2_TB1 > TB2_AB1; DE2_TB1 > TB2_DE1; VI2_TB1 > TB2_VI1; SL2_TB1 > TB2_SL1;
-AB2_ACOM1 > ACOM2_AB1; DE2_ACOM1 > ACOM2_DE1; VI2_ACOM1 > ACOM2_VI1; SL2_ACOM1 > ACOM2_SL1;
-AB2_SAT1 > SAT2_AB1; DE2_SAT1 > SAT2_DE1; VI2_SAT1 > SAT2_VI1; SL2_SAT1 > SAT2_SL1;
-"
-est[c("AB2_TH1", "TH2_AB1", "DE2_TH1", "TH2_DE1", "VI2_TH1", "TH2_VI1", "SL2_TH1", "TH2_SL1",
-      "AB2_TB1", "TB2_AB1", "DE2_TB1", "TB2_DE1", "VI2_TB1", "TB2_VI1", "SL2_TB1", "TB2_SL1",
-      "AB2_ACOM1", "ACOM2_AB1", "DE2_ACOM1", "ACOM2_DE1", "VI2_ACOM1", "ACOM2_VI1", "SL2_ACOM1", "ACOM2_SL1",
-      "AB2_SAT1", "SAT2_AB1", "DE2_SAT1", "SAT2_DE1", "VI2_SAT1", "SAT2_VI1", "SL2_SAT1", "SAT2_SL1")]
-#
-H1_Q2 <- "
-AB2_TH1 > -TH2_AB1; -DE2_TH1 > TH2_DE1; VI2_TH1 > TH2_VI1; -SL2_TH1 > TH2_SL1;
-AB2_TB1 > -TB2_AB1; DE2_TB1 > TB2_DE1; VI2_TB1 > TB2_VI1; SL2_TB1 > TB2_SL1;
--AB2_ACOM1 > ACOM2_AB1; -DE2_ACOM1 > ACOM2_DE1; -VI2_ACOM1 > ACOM2_VI1; -SL2_ACOM1 > ACOM2_SL1;
--AB2_SAT1 > -SAT2_AB1; DE2_SAT1 > SAT2_DE1; -VI2_SAT1 > SAT2_VI1; SL2_SAT1 > SAT2_SL1
+abs(AB2_TH1) > abs(TH2_AB1); abs(DE2_TH1) > abs(TH2_DE1); abs(VI2_TH1) > abs(TH2_VI1); abs(SL2_TH1) > abs(TH2_SL1);
+abs(AB2_TB1) > abs(TB2_AB1); abs(DE2_TB1) > abs(TB2_DE1); abs(VI2_TB1) > abs(TB2_VI1); abs(SL2_TB1) > abs(TB2_SL1);
+abs(AB2_ACOM1) > abs(ACOM2_AB1); abs(DE2_ACOM1) > abs(ACOM2_DE1); abs(VI2_ACOM1) > abs(ACOM2_VI1); abs(SL2_ACOM1) > abs(ACOM2_SL1);
+abs(AB2_SAT1) > abs(SAT2_AB1); abs(DE2_SAT1) > abs(SAT2_DE1); abs(VI2_SAT1) > abs(SAT2_VI1); abs(SL2_SAT1) > abs(SAT2_SL1)
 "
 #
 #

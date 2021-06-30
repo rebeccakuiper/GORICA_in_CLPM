@@ -8,6 +8,14 @@ library(lavaan)
 #
 if (!require("restriktor")) install.packages("restriktor") # install this package first (once)
 library(restriktor) # for goric function
+#
+# Temporary, until this is on CRAN
+#install.packages("devtools")
+library(devtools)
+devtools::install_github("yrosseel/lavaan")
+devtools::install_github("leonardv/restriktor")
+library(lavaan)
+library(restriktor)
 
 
 # Read in data file #
@@ -445,36 +453,19 @@ names(est) <- c("RQ12_RQ11", "RQ12_RQ21", "RQ12_SE1", "RQ12_SL1",
 )
 vcov <- lavInspect(clpmUnc, "vcov.std.all")[indices-6, indices-6]
 
-# Specify hypotheses
-# Since we cannot evaluate absolute values,
-# first check whether there are negative estimates.
-# If so, then adjust sign in hypothesis accordingly.
-#
+# Specify hypotheses (using abs() notation)
 #
 # Q1: Phi_21 > Phi_12
 H1_Q1 <- "
-RQ22_RQ11 > RQ12_RQ21 
-"
-est[c("RQ22_RQ11", "RQ12_RQ21")]
-#
-H1_Q1 <- "
-RQ22_RQ11 > RQ12_RQ21 
+abs(RQ22_RQ11) > abs(RQ12_RQ21)
 "
 #
 # Q2
 H1_Q2 <- "
-SE2_RQ11 > RQ12_SE1;
-SL2_RQ11 > RQ12_SL1;
-SE2_RQ21 > RQ22_SE1;
-SL2_RQ21 > RQ22_SL1
-"
-est[c("SE2_RQ11", "RQ12_SE1", "SL2_RQ11", "RQ12_SL1", "SE2_RQ21", "RQ22_SE1", "SL2_RQ21", "RQ22_SL1")]
-#
-H1_Q2 <- "
--SE2_RQ11 > RQ12_SE1;
-SL2_RQ11 > RQ12_SL1;
-SE2_RQ21 > RQ22_SE1;
--SL2_RQ21 > RQ22_SL1
+abs(SE2_RQ11) > abs(RQ12_SE1);
+abs(SL2_RQ11) > abs(RQ12_SL1);
+abs(SE2_RQ21) > abs(RQ22_SE1);
+abs(SL2_RQ21) > abs(RQ22_SL1)
 "
 #
 # GORICA

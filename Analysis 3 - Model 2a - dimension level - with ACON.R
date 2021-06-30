@@ -98,12 +98,12 @@ stdClpmUnc[112:dim(stdClpmUnc)[1],] # p-values of standardized effects
 #summary(clpmUnc, standardized = T)$PE
 indices <- 1:81
 #summary(clpmUnc, standardized = T)$PE[indices,'std.all']
-stdClpmUnc[indices, 4] # Substracts estimates from the column 'Std.all' in summary above.
+stdClpmUnc[indices, 'est.std'] # Substracts estimates from the column 'Std.all' in summary above.
 lavInspect(clpmUnc, "vcov.std.all")[indices, indices] 
 
 
 # GORICA values and weights
-est <- stdClpmUnc[indices, 4]
+est <- stdClpmUnc[indices, 'est.std']
 names(est) <- c("TH2_TH1", "TH2_TB1", "TH2_ACOM1", "TH2_SAT1", "TH2_ACON1", "TH2_AB1", "TH2_DE1", "TH2_VI1", "TH2_SL1",
                 "TB2_TH1", "TB2_TB1", "TB2_ACOM1", "TB2_SAT1", "TB2_ACON1", "TB2_AB1", "TB2_DE1", "TB2_VI1", "TB2_SL1",
                 "ACOM2_TH1", "ACOM2_TB1", "ACOM2_ACOM1", "ACOM2_SAT1", "ACOM2_ACON1", "ACOM2_AB1", "ACOM2_DE1", "ACOM2_VI1", "ACOM2_SL1",
@@ -117,6 +117,7 @@ names(est) <- c("TH2_TH1", "TH2_TB1", "TH2_ACOM1", "TH2_SAT1", "TH2_ACON1", "TH2
 )
 vcov <- lavInspect(clpmUnc, "vcov.std.all")[indices, indices]
 
+# Specify hypotheses
 # Since we cannot evaluate absolute values,
 # first check whether there are negative estimates.
 # If so, then adjust sign in hypothesis accordingly.
@@ -155,7 +156,7 @@ AB2_TB1 > -TB2_AB1; DE2_TB1 > TB2_DE1; VI2_TB1 > TB2_VI1; SL2_TB1 > TB2_SL1;
 "
 #
 #
-# Gorica
+# GORICA
 #
 # Q1
 set.seed(123)
@@ -178,29 +179,29 @@ summary(goricaResults_Q2_b)
 #The order-restricted hypothesis ‘H1_Q2’ has 148.3 times more support than its complement.
 
 
-
-
 #####
 
 # time-interval dependency #
 
 # Install and load packages
 library(devtools)
-install_github("rebeccakuiper/CTmeta")
+if (!require("CTmeta")) install_github("rebeccakuiper/CTmeta") #install_github("rebeccakuiper/CTmeta", force = TRUE)
 library(CTmeta)
 #?PhiPlot
-if (!require("expm")) install.packages("expm") # install this package first (once)
-library(expm)
+#?ggPhiPlot
 
 # Create Phi matrix from this and make Phi plot
-est <- stdClpmUnc[indices, 4]
+#est <- stdClpmUnc[indices, 'est.std']
 Phi <- matrix(est, byrow=T, ncol = sqrt(length(est)))
 Phi
-if (!require("expm")) install.packages("expm") # install this package first (once)
-library(expm)
-Drift <- logm(Phi)/1
-source("Phi-plot.R")
-PhiPlot(DeltaT = 1, Drift, Min = 0, Max = 10, Step = 0.05, WhichElements = NULL, Labels = NULL, Col = NULL, Lty = NULL, Title = NULL)
+PhiPlot(DeltaT = 1, Phi, Min = 0, Max = 10, Step = 0.05, WhichElements = NULL, Labels = NULL, Col = NULL, Lty = NULL, Title = NULL)
+#ggPhiPlot(DeltaT = 1, Phi, Min = 0, Max = 10, Step = 0.05, WhichElements = NULL, Labels = NULL, Col = NULL, Lty = NULL, Title = NULL)
+
+# Alternative
+#if (!require("expm")) install.packages("expm") # install this package first (once)
+#library(expm)
+#Drift <- logm(Phi)/1 # the drift matrix = the continuous-time equivalent of the discrete-time CLPM lagged effects matrix
+#PhiPlot(DeltaT = 1, Drift = Drift, Min = 0, Max = 10, Step = 0.05, WhichElements = NULL, Labels = NULL, Col = NULL, Lty = NULL, Title = NULL)
 
 # Denote which of the Phi elements we want to plot based on Q1
 WhichEl_Q1 <- matrix(c(
@@ -214,7 +215,7 @@ WhichEl_Q1 <- matrix(c(
   0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0
 ), ncol = sqrt(length(est))) 
-PhiPlot(DeltaT = 1, Drift, Min = 0, Max = 10, Step = 0.05, WhichElements = WhichEl_Q1, Labels = NULL, Col = NULL, Lty = NULL, Title = NULL)
+PhiPlot(DeltaT = 1, Phi, Min = 0, Max = 10, Step = 0.05, WhichElements = WhichEl_Q1, Labels = NULL, Col = NULL, Lty = NULL, Title = NULL)
 
 # Denote which of the Phi elements we want to plot based on Q2
 WhichEl_Q2 <- matrix(c(
@@ -228,5 +229,5 @@ WhichEl_Q2 <- matrix(c(
   1, 1, 1, 1, 1, 0, 0, 0, 0,
   1, 1, 1, 1, 1, 0, 0, 0, 0
 ), ncol = sqrt(length(est))) 
-PhiPlot(DeltaT = 1, Drift, Min = 0, Max = 10, Step = 0.05, WhichElements = WhichEl_Q2, Labels = NULL, Col = NULL, Lty = NULL, Title = NULL)
+PhiPlot(DeltaT = 1, Phi, Min = 0, Max = 10, Step = 0.05, WhichElements = WhichEl_Q2, Labels = NULL, Col = NULL, Lty = NULL, Title = NULL)
 
